@@ -1,0 +1,1 @@
+Python code package for multiscale analysis via subdivision schemes. Applications like Contrast Enhancement and Data Compression are included. The package is complementary to the paper at [https://arxiv.org/abs/2305.06261].
