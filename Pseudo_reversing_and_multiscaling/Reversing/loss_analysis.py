@@ -9,8 +9,8 @@ def loss_function(alpha: list, support: list, xi: float):
     new_mask = uf.pseudo_reversing(mask=alpha.copy(), support=support.copy(), xi=xi)
     gamma = uf.gamma(mask=new_mask, support=support)
     even_mask = [new_mask[k] for k in range(len(new_mask)) if support[k] % 2 == 0]
-    delta = [0] * int(600 - len(even_alpha))
-    delta[int(300 - np.floor(len(even_alpha)/2))] = 1
+    delta = [0] * int(200 - len(even_alpha))
+    delta[int(100 - np.floor(len(even_alpha)/2))] = 1
     return np.linalg.norm(np.subtract(delta, np.convolve(gamma, even_alpha, 'valid')), ord=2), np.linalg.norm(np.subtract(even_mask, even_alpha), ord=1)
 
 

@@ -1,5 +1,5 @@
 import displacement_functions as duf
-import Even_singular_pyramid.Linear.linear_functions as uf
+import Pseudo_reversing_and_multiscaling.Linear.linear_functions as uf
 import matplotlib.pyplot as plt
 import numpy as np
 plt.rc('font', family='serif')

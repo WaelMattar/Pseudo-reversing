@@ -1,5 +1,5 @@
 from matplotlib.ticker import FormatStrFormatter
-import Even_singular_pyramid.Reversing.displacement_functions as df
+import Pseudo_reversing_and_multiscaling.Reversing.displacement_functions as df
 import linear_functions as uf
 import numpy as np
 import matplotlib.pyplot as plt
