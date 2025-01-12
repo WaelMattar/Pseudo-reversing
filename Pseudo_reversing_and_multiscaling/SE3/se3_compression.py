@@ -33,18 +33,17 @@ compressed = uf.pyramid_compress_ratio(pyramid=compressed_1, ratio=0.99)
 synthesis = uf.SE3_inverse_pyramid(pyramid=compressed,
                                    alpha=alpha,
                                    alpha_support=support)
-relative_riemannian_distances = [uf.SE3_Riemannian_dist(A=samples[k], B=synthesis[k])/
-                                 uf.SE3_Riemannian_dist(A=samples[k], B=np.identity(4)) for k in range(len(samples))]
+relative_riemannian_distances = [uf.SE3_Riemannian_dist(A=samples[k], B=synthesis[k]) for k in range(len(samples))]
 print('The synthesis error is ', np.median(relative_riemannian_distances))
 
 # plot error histogram
 plt.figure(99, figsize=(8, 6))
 sns.histplot(relative_riemannian_distances, bins=50, edgecolor='black', color='blue', kde=True)
-plt.xlabel('Relative errors', fontsize=16)
+plt.xlabel('Riemannian distance', fontsize=16)
 plt.ylabel('Density', fontsize=16)
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
-plt.savefig('Figures/Relative_errors_histogram.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
+plt.savefig('Figures/Riemannian_distance_histogram.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
 
 # plot curves
 for _ in range(level_of_sampling - 3):
