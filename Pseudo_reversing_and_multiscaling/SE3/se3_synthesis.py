@@ -2,8 +2,7 @@ import Pseudo_reversing_and_multiscaling.Reversing.displacement_functions as df
 import se3_functions as uf
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-plt.rc('font', family='serif')
+from scipy.linalg import expm, logm
 
 n = 2
 d = 1
@@ -25,9 +24,8 @@ pyramid = uf.SE3_pyramid(sequence=samples,
                          gamma=gamma,
                          layers=pyramid_layers)
 
-# zero even details + compression by ratio
-compressed_1 = uf.pyramid_zero_even_details(pyramid=pyramid)
-compressed = uf.pyramid_compress_ratio(pyramid=compressed_1, ratio=0.99)
+# zero even details
+compressed = uf.pyramid_zero_even_details(pyramid=pyramid)
 
 # synthesis
 synthesis = uf.SE3_inverse_pyramid(pyramid=compressed,
@@ -36,15 +34,6 @@ synthesis = uf.SE3_inverse_pyramid(pyramid=compressed,
 relative_riemannian_distances = [uf.SE3_Riemannian_dist(A=samples[k], B=synthesis[k])/
                                  uf.SE3_Riemannian_dist(A=samples[k], B=np.identity(4)) for k in range(len(samples))]
 print('The synthesis error is ', np.median(relative_riemannian_distances))
-
-# plot error histogram
-plt.figure(99, figsize=(8, 6))
-sns.histplot(relative_riemannian_distances, bins=50, edgecolor='black', color='blue', kde=True)
-plt.xlabel('Relative errors', fontsize=16)
-plt.ylabel('Density', fontsize=16)
-plt.xticks(fontsize=16)
-plt.yticks(fontsize=16)
-plt.savefig('Figures/Relative_errors_histogram.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
 
 # plot curves
 for _ in range(level_of_sampling - 3):
@@ -62,10 +51,10 @@ for rot, loc in zip(rotation, location):
     ax.quiver(loc[0], loc[1], loc[2], result[0, 2], result[1, 2], result[2, 2], length=length, color='green')
 # position
 ax.plot3D([location[k][0] for k in range(len(location))], [location[k][1] for k in range(len(location))], [location[k][2] for k in range(len(location))], 'k')
-plt.axis('on')
+plt.axis('off')
 uf.set_axes_equal(ax)
 ax.view_init(azim=-150, elev=0)
-plt.savefig('Figures/SE3_curve.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
+plt.savefig('Figures/SE3_curve.eps', format='eps', bbox_inches='tight', pad_inches=0)
 
 # compressed
 for _ in range(level_of_sampling - 3):
@@ -81,8 +70,8 @@ for rot, loc in zip(rotation, location):
     ax.quiver(loc[0], loc[1], loc[2], result[0, 2], result[1, 2], result[2, 2], length=length, color='green')
 # position
 ax.plot3D([location[k][0] for k in range(len(location))], [location[k][1] for k in range(len(location))], [location[k][2] for k in range(len(location))], 'k')
-plt.axis('on')
+plt.axis('off')
 uf.set_axes_equal(ax)
 ax.view_init(azim=-150, elev=0)
-plt.savefig('Figures/SE3_compression.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
+plt.savefig('Figures/SE3_compression.eps', format='eps', bbox_inches='tight', pad_inches=0)
 plt.show()

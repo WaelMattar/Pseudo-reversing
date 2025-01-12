@@ -1,6 +1,6 @@
-from Even_singular_pyramid.SO3.so3_functions import subdivision_scheme_multiple_times as so3_refine
-from Even_singular_pyramid.Linear.linear_functions import subdivision_scheme_multiple_times as lin_refine
-from Even_singular_pyramid.Linear.linear_functions import downsample_multiple_times as lin_ds
+from Pseudo_reversing_and_multiscaling.SO3.so3_functions import subdivision_scheme_multiple_times as so3_refine
+from Pseudo_reversing_and_multiscaling.Linear.linear_functions import subdivision_scheme_multiple_times as lin_refine
+from Pseudo_reversing_and_multiscaling.Linear.linear_functions import downsample_multiple_times as lin_ds
 from scipy.linalg import expm, logm
 from functools import reduce
 import numpy as np
@@ -171,11 +171,29 @@ def dyadic_grid(left_boundary: float, right_boundary: float, resolution: int, di
     return np.linspace(left_boundary, right_boundary, (right_boundary - left_boundary) * dilation_factor ** (resolution - 1) + 1)
 
 
-def pyramid_compress(pyramid: list):
+def pyramid_zero_even_details(pyramid: list):
     compressed_pyramid = copy.deepcopy(pyramid)
     for level in range(len(compressed_pyramid)-1):
         for k in range(int(np.floor(len(compressed_pyramid[-level-1]) / 2))):
              compressed_pyramid[-level-1][2*k + 1] = np.zeros((4, 4))
+    return compressed_pyramid
+
+
+def pyramid_compress_ratio(pyramid: list, ratio: np.float):
+    compressed_pyramid = copy.deepcopy(pyramid)
+
+    for level in range(len(compressed_pyramid)-1):
+
+        norms = []
+        for k in range(int(len(compressed_pyramid[-level-1]))):
+            norms.append(np.linalg.norm(compressed_pyramid[-level-1][k]))
+
+        threshold = np.quantile(norms, ratio)
+
+        for k in range(int(len(compressed_pyramid[-level - 1]))):
+            if np.linalg.norm(compressed_pyramid[-level - 1][k]) < threshold:
+                compressed_pyramid[-level - 1][k] = np.zeros((4, 4))
+
     return compressed_pyramid
 
 
