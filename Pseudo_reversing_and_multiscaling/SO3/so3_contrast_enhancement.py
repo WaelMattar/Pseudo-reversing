@@ -61,11 +61,13 @@ fig = plt.figure(2, figsize=(8, 6))
 ax = fig.add_subplot(projection='3d')
 for _ in range(number_of_layers - 3):
     synthesis = uf.downsample(synthesis)
-for rotation, x in zip(synthesis, loc):
+    riemannian_distances = uf.downsample(riemannian_distances)
+max_error = max(riemannian_distances)
+for rotation, x, error in zip(synthesis, loc, riemannian_distances):
     result = np.matmul(rotation, basis_matrix)
-    ax.quiver(scale * x, 0, 0, result[0, 0], result[1, 0], result[2, 0], length=length, color='blue')
-    ax.quiver(scale * x, 0, 0, result[0, 1], result[1, 1], result[2, 1], length=length, color='red')
-    ax.quiver(scale * x, 0, 0, result[0, 2], result[1, 2], result[2, 2], length=length, color='green')
+    ax.quiver(scale * x, 0, 0, result[0, 0], result[1, 0], result[2, 0], length=length, color='blue', alpha=max(error/max_error, 0.05))
+    ax.quiver(scale * x, 0, 0, result[0, 1], result[1, 1], result[2, 1], length=length, color='red', alpha=max(error/max_error, 0.05))
+    ax.quiver(scale * x, 0, 0, result[0, 2], result[1, 2], result[2, 2], length=length, color='green', alpha=max(error/max_error, 0.05))
 plt.axis('off')
 uf.set_axes_equal(ax)
 ax.view_init(azim=60, elev=90)
