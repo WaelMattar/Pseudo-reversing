@@ -38,12 +38,15 @@ print('The synthesis error is ', np.median(riemannian_distances))
 
 # plot error histogram
 plt.figure(99, figsize=(8, 6))
-sns.histplot(riemannian_distances, bins=50, edgecolor='black', color='blue', kde=True)
-plt.xlabel('Riemannian distance', fontsize=16)
-plt.ylabel(' ', fontsize=16)
+plt.plot(np.linspace(1, 641, len(riemannian_distances)), riemannian_distances, c='k', linewidth=3)
+plt.xlabel('Curve parametrization', fontsize=16)
+plt.ylabel('Riemannian distance', fontsize=16)
 plt.xticks(fontsize=16)
-plt.yticks([])
-plt.savefig('Figures/Riemannian_distance_histogram.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
+plt.yticks(fontsize=16)
+plt.ylim([0, 3])
+plt.xlim([1, 641])
+plt.grid(linestyle='--', linewidth=0.5)
+plt.savefig('Figures/Riemannian_distance_plot.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
 
 # plot curves
 for _ in range(level_of_sampling - 3):
@@ -64,6 +67,9 @@ ax.plot3D([location[k][0] for k in range(len(location))], [location[k][1] for k 
 plt.axis('on')
 uf.set_axes_equal(ax)
 ax.view_init(azim=-150, elev=0)
+ax.axes.set_xlim3d(left=-4, right=4)
+ax.axes.set_ylim3d(bottom=-4, top=4)
+ax.axes.set_zlim3d(bottom=0, top=8)
 plt.savefig('Figures/SE3_curve.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
 
 # compressed
@@ -83,5 +89,8 @@ ax.plot3D([location[k][0] for k in range(len(location))], [location[k][1] for k 
 plt.axis('on')
 uf.set_axes_equal(ax)
 ax.view_init(azim=-150, elev=0)
+ax.axes.set_xlim3d(left=-4, right=4)
+ax.axes.set_ylim3d(bottom=-4, top=4)
+ax.axes.set_zlim3d(bottom=0, top=8)
 plt.savefig('Figures/SE3_compression.pdf', format='pdf', bbox_inches='tight', pad_inches=0)
 plt.show()

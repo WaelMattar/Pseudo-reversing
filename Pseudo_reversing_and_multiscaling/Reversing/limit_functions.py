@@ -14,7 +14,7 @@ delta = np.array([0] * len(uf.dyadic_grid(-10, 10, 1)))
 delta[int(len(delta) / 2)] = 1
 
 plt.figure(1, figsize=(8, 7))
-plt.scatter(uf.dyadic_grid(-10, 10, 1), delta, label='Delta', color='k')
+plt.scatter(uf.dyadic_grid(-10, 10, 1), delta, color='k')
 for xi in xis:
     new_mask = duf.pseudo_reversing(mask=alpha.copy(), support=support.copy(), xi=xi)
     refined = uf.subdivision_scheme_multiple_times(mask=new_mask, support=support, sequence=delta, n=5)
