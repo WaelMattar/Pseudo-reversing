@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 plt.rc('font', family='serif')
 
-#  TODO: the limit functions are shifted! To fix this, sway "ceil" with "floor" in line 48 in Linear.linear_functions.py
+#  TODO: the limit functions are shifted! To fix this, swap "ceil" with "floor" in line 48 in Linear.linear_functions.py
 
 n = 2
 d = 1
